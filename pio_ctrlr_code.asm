@@ -49,9 +49,9 @@ SCANLOOP:
 ;
 ;*******************************************************************************
 ;set output 0 low
-      clr      P0.0                           ; 2 cycles
-      mov      KEYPTR_BASE+00, @R0            ; 2 cycles Read in port
-      setb     P0.0
+;      clr      P0.0                           ; 2 cycles
+;      mov      KEYPTR_BASE+00, @R0            ; 2 cycles Read in port
+;      setb     P0.0
 
 ;*******************************************************************************
 ;set output 1 low
@@ -201,9 +201,9 @@ SKIPWAKE:
 ;
 ;*******************************************************************************
 ;set output 0 low
-      clr      P0.0                            ; 2 cycles
-      mov      KEYPTR_BASE2+00, @R0            ; 2 cycles Read in port
-      setb     P0.0
+;      clr      P0.0                            ; 2 cycles
+;      mov      KEYPTR_BASE2+00, @R0            ; 2 cycles Read in port
+;      setb     P0.0
 
 ;*******************************************************************************
 ;set output 1 low

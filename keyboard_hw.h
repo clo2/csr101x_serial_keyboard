@@ -27,8 +27,12 @@
  *   Public Definitions
  *============================================================================*/
 
+#define UART_RX_PIO             (1)
+#define UART_TX_PIO             (0)
+
+
 /* PIO associated with the pairing button on keyboard. */
-#define PAIRING_BUTTON_PIO            (1)
+#define PAIRING_BUTTON_PIO            (10)
 
 /* PIO which serves as power supply for the EEPROM. */
 #define EEPROM_POWER_PIO              (2)
@@ -52,7 +56,8 @@
 
 /* Bit-mask of a PIO. */
 #define PIO_BIT_MASK(pio)             (0x01UL << (pio))
-
+#define UART_RX_PIO_MASK        (PIO_BIT_MASK(UART_RX_PIO)) 
+#define UART_TX_PIO_MASK        (PIO_BIT_MASK(UART_TX_PIO)) 
 #define NUMLOCK_LED_BIT_MASK      PIO_BIT_MASK(NUMLOCK_LED_PIO)
 #define CAPSLOCK_LED_BIT_MASK     PIO_BIT_MASK(CAPSLOCK_LED_PIO)
 #define PAIR_LED_BIT_MASK         PIO_BIT_MASK(PAIR_LED_PIO)

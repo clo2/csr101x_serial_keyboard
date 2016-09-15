@@ -42,6 +42,7 @@
 #include "gatt_service.h"
 #include "csr_ota_service.h"
 #include "bond_mgmt_service.h"
+#include "uartio.h"
 
 #ifdef __PROPRIETARY_HID_SUPPORT__
 
@@ -2730,6 +2731,9 @@ void AppInit(sleep_state LastSleepState)
      */
     gatt_database_pointer = GattGetDatabase(&gatt_database_length);
     GattAddDatabaseReq(gatt_database_length, gatt_database_pointer);
+
+	/* Run the startup routine (from uartio.h) */
+	UartStart(LastSleepState);
 
 }
 

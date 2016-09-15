@@ -461,7 +461,7 @@ void InitHardware(void)
     PioSetPullModes(PIO_CONTROLLER_BIT_MASK, pio_mode_strong_pull_up);
 
     /* Don't wakeup on UART RX line toggling */
-    SleepWakeOnUartRX(FALSE);
+//    SleepWakeOnUartRX(FALSE);
 
     /* Overlay the SPI debug lines with LEDS */
     PioSetModes((uint32)KEYBOARD_LEDS_BIT_MASK, pio_mode_user);
@@ -481,7 +481,20 @@ void InitHardware(void)
     PioSetPullModes(PAIRING_BUTTON_PIO_MASK, pio_mode_strong_pull_up);
     /* Setup button on PIO1 */
     PioSetEventMask(PAIRING_BUTTON_PIO_MASK, pio_event_mode_both);
- 
+
+	/* Set the UART Rx PIO to user mode */
+	PioSetModes(UART_RX_PIO_MASK, pio_mode_user);
+	PioSetDir(UART_RX_PIO, PIO_DIRECTION_INPUT);
+	PioSetPullModes(UART_RX_PIO_MASK, pio_mode_strong_pull_up);
+	PioSetEventMask(UART_RX_PIO_MASK, pio_event_mode_disable);
+
+	/* Set the UART Tx PIO to user mode */
+	PioSetModes(UART_TX_PIO_MASK, pio_mode_user);
+	PioSetDir(UART_TX_PIO, PIO_DIRECTION_OUTPUT);
+	PioSetPullModes(UART_TX_PIO_MASK, pio_mode_strong_pull_up);
+	PioSetEventMask(UART_TX_PIO_MASK, pio_event_mode_disable);
+
+
 #ifdef ENABLE_PAIR_LED
 
     /* Set up the pair LED to normal user mode. When the application wants
