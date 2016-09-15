@@ -1,0 +1,12 @@
+*.d
+*.o
+*.si
+*.xuv
+flags.*
+*.map
+*.img
+*.elf
+*.debug.mak
+*.release.mak
+depend_Debug_*/
+depend_Release_*/
