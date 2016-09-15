@@ -1,0 +1,47 @@
+/*******************************************************************************
+ *  Copyright (c) 2012 - 2016 Qualcomm Technologies International, Ltd.
+ *  Part of CSR uEnergy SDK 2.6.1
+ *  Application version 2.6.1.0
+ *
+ *  FILE
+ *    hid_boot_service_db.db
+ *
+ *  DESCRIPTION
+ *    This file defines the proprietary HID Service in JSON format, which 
+ *    is fairly human readable. This file is included in the main 
+ *    application data base file which is used to produce ATT
+ *    flat data base.
+ *
+ *****************************************************************************/
+#ifndef __HID_BOOT_SERVICE_DB__
+#define __HID_BOOT_SERVICE_DB__
+
+#include "hid_boot_service_uuids.h" 
+
+/* Primary service declaration of Proprietary HID service to be used in boot
+ * mode.
+ */
+primary_service {
+    uuid : HID_PROP_SERV_UUID,
+    name : "HID_PROP_BOOT_SERVICE",
+
+    /* Report characteristic. */
+    
+    /* Boot report characteristic supports IRQ flag, thereby reads 
+     * and writes on characteristic value are handled by application. 
+     */
+    
+    characteristic {
+        uuid : HID_BOOT_REPORT_UUID,
+        name : "HID_PROP_BOOT_REPORT",
+        flags : [FLAG_IRQ],
+        properties : [write_cmd, notify],
+        size_value : 8,
+        
+        client_config {
+            flags : [FLAG_IRQ],
+            name : "HID_PROP_BOOT_RPT_CLIENT_CONFIG"
+            }
+    }      
+},
+#endif /* __HID_BOOT_SERVICE_DB__ */

@@ -1,0 +1,43 @@
+/******************************************************************************
+ *  Copyright (c) 2014 - 2016 Qualcomm Technologies International, Ltd.
+ *  Part of CSR uEnergy SDK 2.6.1
+ *  Application version 2.6.1.0
+ *
+ *  FILE
+ *      bond_mgmt_service_db.db
+ *
+ *  DESCRIPTION
+ *      This file defines the Bond Management Service in JSON format.
+ *      This file is included in the main application data base 
+ *      file which is used to produce ATT flat data base.
+ *
+ *****************************************************************************/
+#ifndef __BOND_MGMT_SERVICE_DB__
+#define __BOND_MGMT_SERVICE_DB__
+
+#include "bond_mgmt_uuids.h"
+
+/* Primary service declaration of Bond Management service. */
+primary_service {
+    uuid : BOND_MGMT_SERVICE_UUID,
+    name : "BOND_MGMT_SERVICE", /* Name will be used in handle name macro */
+
+    /* Bond Management Control Point characteristic */    
+    characteristic {
+        uuid : BOND_MGMT_CONTROL_POINT_UUID,
+        name : "BOND_MGMT_CONTROL_POINT",
+        flags : FLAG_IRQ,
+        properties : write,
+        value : 0x00        
+    },
+
+    /* Bond Management Feature characteristic */
+    characteristic {
+        uuid : BOND_MGMT_FEATURE_UUID,
+        name : "BOND_MGMT_FEATURE",
+        flags : FLAG_IRQ,
+        properties : read,
+        value : 0x00        
+    }
+},
+#endif /* __BOND_MGMT_SERVICE_DB__ */
