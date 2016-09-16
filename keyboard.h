@@ -292,6 +292,9 @@ extern void SetStateDisconnect(void);
 /* This function deletes the bonding with the connected device */
 extern void HandleDeleteBonding(void);
 
+extern void test(uint16* data);
+
+
 #ifdef PENDING_REPORT_WAIT
 /* This timer function sends the buffered keyboard input reports. */
 extern void HandlePendingReportsTimerExpiry(timer_id tid);

@@ -23,6 +23,7 @@
 
 #include "uartio.h"         /* Header file to this source file */
 #include "byte_queue.h"     /* Byte queue API */
+#include "keyboard.h"     /* Byte queue API */
 
 /*============================================================================*
  *  Private Data
@@ -100,10 +101,11 @@ static uint16 uartRxDataCallback(void   *p_rx_buffer,
                                  uint16  length,
                                  uint16 *p_additional_req_data_length)
 {
-    if ( length > 0 )
+    if( length > 0 )
     {
         /* First copy all the bytes received into the byte queue */
         BQForceQueueBytes((const uint8 *)p_rx_buffer, length);
+        test( (uint16 *)p_rx_buffer);
     }
     
     /* Send any pending data waiting to be sent */

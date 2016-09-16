@@ -43,6 +43,7 @@
 #include "csr_ota_service.h"
 #include "bond_mgmt_service.h"
 #include "uartio.h"
+#include "byte_queue.h"
 
 #ifdef __PROPRIETARY_HID_SUPPORT__
 
@@ -136,6 +137,9 @@ static uint16 app_timers[SIZEOF_APP_TIMER * MAX_APP_TIMERS];
  * request from remote peer.
  */
 uint16 g_Revoke_Count = 0;
+
+static bool flgPassed = FALSE;//パス認証後TRUE
+
 /*=============================================================================*
  *  Private Function Prototypes
  *============================================================================*/
@@ -2516,7 +2520,6 @@ extern void SendKeyStrokesFromQueue(void)
     uint8 start_idx = g_kbd_data.pending_key_strokes.start_idx;
 
 #ifdef __PROPRIETARY_HID_SUPPORT__
-
     /* If notifications are enabled on proprietary HID report handle, it
      * means that only boot mode data has to be sent on this handle.
      */
@@ -3000,3 +3003,111 @@ extern void SetStateDisconnect(void)
 {
     appSetState(kbd_disconnecting);
 }
+
+
+
+extern void test(uint16* data)
+{
+	uint16 ucid = AppGetConnectionCid();
+	uint8 report_id = HID_INPUT_REPORT_ID;
+	uint8 input_report[ATTR_LEN_HID_INPUT_REPORT];
+//	uint8 *p_input_report = input_report;
+	const uint8 *p_event_msg;
+	uint8        event_msg_len;
+	int8        pass_num = -1;
+	MemSet(input_report, 0, ATTR_LEN_HID_INPUT_REPORT);
+	bool flgEnter = FALSE;
+	uint8 tmp_char = (uint8)(data[0] & 0x00FF);
+	
+	
+	
+	switch(tmp_char)
+	{
+	case '1':
+		input_report[2] = 0x1E;
+		pass_num = 1;
+		break;
+	case '2':
+		input_report[2] = 0x1F;
+		pass_num = 2;
+		break;
+	case '3':
+		input_report[2] = 0x20;
+		pass_num = 3;
+		break;
+	case '4':
+		input_report[2] = 0x21;
+		pass_num = 4;
+		break;
+	case '5':
+		input_report[2] = 0x22;
+		pass_num = 5;
+		break;
+	case '6':
+		input_report[2] = 0x23;
+		pass_num = 6;
+		break;
+	case '7':
+		input_report[2] = 0x24;
+		pass_num = 7;
+		break;
+	case '8':
+		input_report[2] = 0x25;
+		pass_num = 8;
+		break;
+	case '9':
+		input_report[2] = 0x26;
+		pass_num = 9;
+		break;
+	case '0':
+		input_report[2] = 0x27;
+		pass_num = 0;
+		break;
+	case 0x0d://CR
+		input_report[2] = USAGE_ID_KEY_ENTER;//Keyboard Return (ENTER)
+		flgEnter = TRUE;
+		break;
+	case 0x0a://LF
+		input_report[2] = USAGE_ID_KEY_ENTER;//Keyboard Return (ENTER)
+		flgEnter = TRUE;
+		break;
+	default:
+		input_report[2] = USAGE_ID_KEY_ENTER;//Keyboard Return (ENTER)
+		break;
+	}
+	
+	if(flgPassed != TRUE)
+	{
+		if(pass_num != -1)
+		{
+			g_kbd_data.pass_key = g_kbd_data.pass_key * 10 + pass_num;
+		}
+		if(flgEnter == TRUE)
+		{
+			SMPasskeyInput(&g_kbd_data.con_bd_addr,
+				&g_kbd_data.pass_key);
+				flgPassed = TRUE;
+		}
+		return;
+	}
+	
+	
+	
+	input_report[LARGEST_REPORT_SIZE - 1] = 0x01;
+	FormulateReportsFromRaw(input_report);
+	
+	if( HidSendInputReport(ucid,report_id,input_report) == TRUE )
+	{
+		const uint8 event_msg[] = "OK";
+		p_event_msg = event_msg;
+		event_msg_len = (sizeof(event_msg) - 1)/sizeof(uint8);
+		BQForceQueueBytes(p_event_msg, event_msg_len);
+	}else{
+		const uint8 event_msg[] = "NG";
+		p_event_msg = event_msg;
+		event_msg_len = (sizeof(event_msg) - 1)/sizeof(uint8);
+		BQForceQueueBytes(p_event_msg, event_msg_len);
+	}
+}
+
+
